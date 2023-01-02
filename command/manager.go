@@ -22,10 +22,9 @@ func NewCommandManager(client *gateway.Session, config *config.Config) *CommandM
 
 func (mgr *CommandManager) Init() {
 	mgr.Register(new(HelpCommand))
-	mgr.Register(new(AvatarCommand))
 	mgr.Register(new(SayCommand))
 	mgr.Register(new(EmbedCommand))
-	mgr.Register(new(ServerInfoCommand))
+	mgr.Register(new(PingCommand))
 }
 
 func (mgr *CommandManager) Handler(client *gateway.Session, config *config.Config) func(*discord.Interaction) {

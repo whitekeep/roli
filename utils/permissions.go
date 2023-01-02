@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"errors"
 	"roli/config"
 )
 
@@ -13,23 +12,29 @@ const (
 	Developer
 )
 
-func HavePermission(userRoles []string, whitelist config.Roles, requiredLevel int) (bool, error) {
+// HavePermission TODO: Переделать - сделать алгоритм более эффективным
+func HavePermission(userRoles []string, whitelist config.Roles, requiredLevel int) bool {
 
-	switch {
-
-	case requiredLevel <= Everyone:
-		return true, nil
-
-	case requiredLevel <= Moderator:
-		return HaveIntersect(userRoles, whitelist.ModeratorRoles), nil
-
-	case requiredLevel <= Admin:
-		return HaveIntersect(userRoles, whitelist.AdminRoles), nil
-
-	case requiredLevel <= Developer:
-		return HaveIntersect(userRoles, whitelist.DevRoles), nil
-
-	default:
-		return false, errors.New("invalid permission level")
+	if requiredLevel == Everyone {
+		return true
 	}
+
+	userLevel := Everyone
+
+	for _, role := range userRoles {
+		if ArrayContains(whitelist.ModeratorRoles, role) {
+			userLevel = Moderator
+		}
+		if ArrayContains(whitelist.AdminRoles, role) {
+			userLevel = Admin
+		}
+		if ArrayContains(whitelist.OwnerRoles, role) {
+			userLevel = Owner
+		}
+		if ArrayContains(whitelist.DevRoles, role) {
+			userLevel = Developer
+		}
+	}
+
+	return userLevel >= requiredLevel
 }
