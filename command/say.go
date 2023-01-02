@@ -38,8 +38,8 @@ func (c *SayCommand) Options() []*discord.ApplicationCommandOption {
 
 func (c *SayCommand) Execute(ctx *Context) bool {
 	// Check if the user have the permission to use this command
-	permission, err := utils.HavePermission(ctx.interaction.Member.Roles, ctx.config.Roles, utils.Admin)
-	if err != nil || !permission {
+	permission := utils.HavePermission(ctx.interaction.Member.Roles, ctx.config.Roles, utils.Admin)
+	if !permission {
 		// If the user don't have the permission, send a message to the user
 		_, _ = ctx.client.Interaction.CreateResponse(
 			ctx.interaction.Id,

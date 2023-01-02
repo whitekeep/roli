@@ -18,6 +18,7 @@ type Roles struct {
 	AdminRoles     []string `json:"admin_roles"`
 	ModeratorRoles []string `json:"moderator_roles"`
 	DevRoles       []string `json:"developer_roles"`
+	OwnerRoles     []string `json:"owner_roles"`
 }
 
 func GetConfig() (*Config, error) {
