@@ -35,32 +35,19 @@ func (c *EmbedCommand) Options() []*discord.ApplicationCommandOption {
 			Description: "Description of the embed (use -br for break line)",
 			Required:    true,
 		},
-		{
-			Name:        "new",
-			Type:        discord.ApplicationCommandOptionString,
-			Description: "i dont know",
-			Required:    false,
-		},
 	}
 }
 
 func (c *EmbedCommand) Execute(ctx *Context) bool {
 	e := embed.NewEmbedBuilder()
 
-	if !ctx.interaction.Member.Permissions.Has(discord.BitwisePermissionFlagManageMessages) {
-		e.SetDescription("You do not have permission to run this command")
-		e.SetColor(embed.Red)
+	title := ctx.interaction.Data.Options[0].String()
+	description := ctx.interaction.Data.Options[1].String()
 
-		ctx.client.Interaction.CreateResponse(ctx.interaction.Id, ctx.interaction.Token, &discord.InteractionCallbackMessage{Embeds: []*embed.Embed{e.Embed()}, Flags: discord.MessageFlagEphemeral})
-	} else {
-		title := ctx.interaction.Data.Options[0].String()
-		description := ctx.interaction.Data.Options[1].String()
+	e.AddField(title, strings.ReplaceAll(description, "-br", "\n"), false)
+	e.SetColor(embed.Green)
 
-		e.AddField(title, strings.ReplaceAll(description, "-br", "\n"), false)
-		e.SetColor(embed.Green)
-
-		ctx.client.Interaction.CreateResponse(ctx.interaction.Id, ctx.interaction.Token, e.Embed())
-	}
+	_, _ = ctx.client.Interaction.CreateResponse(ctx.interaction.Id, ctx.interaction.Token, e.Embed())
 
 	return true
 }
