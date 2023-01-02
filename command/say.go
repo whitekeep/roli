@@ -12,7 +12,7 @@ func (c *SayCommand) Name() string {
 }
 
 func (c *SayCommand) Description() string {
-	return "Say all after the command in the channel!"
+	return "Повторить сообщение в определённом канале"
 }
 
 func (c *SayCommand) Category() string {
@@ -22,15 +22,15 @@ func (c *SayCommand) Category() string {
 func (c *SayCommand) Options() []*discord.ApplicationCommandOption {
 	return []*discord.ApplicationCommandOption{
 		{
-			Name:        "msgid",
+			Name:        "message_id",
 			Type:        discord.ApplicationCommandOptionString,
-			Description: "ID of the message to say",
+			Description: "ID сообщения, которое нужно отправить",
 			Required:    true,
 		},
 		{
-			Name:        "chnid",
+			Name:        "channel_id",
 			Type:        discord.ApplicationCommandOptionString,
-			Description: "ID of the channel where say the message",
+			Description: "ID канала, в который нужно отправить сообщение",
 			Required:    true,
 		},
 	}
@@ -45,7 +45,7 @@ func (c *SayCommand) Execute(ctx *Context) bool {
 			ctx.interaction.Id,
 			ctx.interaction.Token,
 			&discord.InteractionCallbackMessage{
-				Content: "You don't have the permission to use this command!",
+				Content: "У вас недостаточно прав для использования данной команды!",
 				Flags:   discord.MessageFlagEphemeral,
 			})
 		return false
@@ -64,7 +64,7 @@ func (c *SayCommand) Execute(ctx *Context) bool {
 			ctx.interaction.Id,
 			ctx.interaction.Token,
 			&discord.InteractionCallbackMessage{
-				Content: "Error!❌",
+				Content: "Ошибка! ❌",
 				Flags:   discord.MessageFlagEphemeral,
 			})
 	} else {
@@ -72,7 +72,7 @@ func (c *SayCommand) Execute(ctx *Context) bool {
 			ctx.interaction.Id,
 			ctx.interaction.Token,
 			&discord.InteractionCallbackMessage{
-				Content: "Done!✅",
+				Content: "Готово! ✅",
 				Flags:   discord.MessageFlagEphemeral,
 			})
 	}

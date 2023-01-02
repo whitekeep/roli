@@ -13,7 +13,7 @@ func (c *PingCommand) Name() string {
 }
 
 func (c *PingCommand) Description() string {
-	return "Get the bot latency!"
+	return "Получить задержку бота"
 }
 
 func (c *PingCommand) Category() string {
@@ -25,7 +25,13 @@ func (c *PingCommand) Options() []*discord.ApplicationCommandOption {
 }
 
 func (c *PingCommand) Execute(ctx *Context) bool {
-	ctx.client.Interaction.CreateResponse(ctx.interaction.Id, ctx.interaction.Token, &discord.InteractionCallbackMessage{Content: fmt.Sprintf("Pong! 🏓 (%dms)", ctx.client.Latency().Milliseconds()), Flags: discord.MessageFlagEphemeral})
+	_, _ = ctx.client.Interaction.CreateResponse(
+		ctx.interaction.Id,
+		ctx.interaction.Token,
+		&discord.InteractionCallbackMessage{
+			Content: fmt.Sprintf("Pong! 🏓 (%dms)", ctx.client.Latency().Milliseconds()),
+			Flags:   discord.MessageFlagEphemeral,
+		})
 
 	return true
 }

@@ -14,7 +14,7 @@ func (c *HelpCommand) Name() string {
 }
 
 func (c *HelpCommand) Description() string {
-	return "Display help page!"
+	return "Показать справку по командам"
 }
 
 func (c *HelpCommand) Category() string {
@@ -28,7 +28,7 @@ func (c *HelpCommand) Options() []*discord.ApplicationCommandOption {
 func (c *HelpCommand) Execute(ctx *Context) bool {
 	e := embed.NewEmbedBuilder()
 
-	e.SetTitle(":books: | Help page")
+	e.SetTitle(":books: | Помощь по командам")
 
 	for _, cmd := range ctx.cmdMgr.commands {
 		e.AddField(fmt.Sprintf("/%s", cmd.Name()), cmd.Description(), false)
@@ -37,7 +37,13 @@ func (c *HelpCommand) Execute(ctx *Context) bool {
 	e.SetFooter(ctx.client.Me().Username, ctx.client.Me().AvatarURL())
 	e.SetColor(embed.Green)
 
-	ctx.client.Interaction.CreateResponse(ctx.interaction.Id, ctx.interaction.Token, &discord.InteractionCallbackMessage{Embeds: []*embed.Embed{e.Embed()}, Flags: discord.MessageFlagEphemeral})
+	_, _ = ctx.client.Interaction.CreateResponse(
+		ctx.interaction.Id,
+		ctx.interaction.Token,
+		&discord.InteractionCallbackMessage{
+			Embeds: []*embed.Embed{e.Embed()},
+			Flags:  discord.MessageFlagEphemeral,
+		})
 
 	return true
 }
