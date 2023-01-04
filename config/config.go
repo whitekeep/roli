@@ -31,13 +31,13 @@ func GetConfig() (*Config, error) {
 		}
 
 		// write json to file
-		err = ioutil.WriteFile("config.json", bytes, 0644)
+		err = os.WriteFile("config.json", bytes, 0644)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	data, err := ioutil.ReadFile("config.json")
+	data, err := os.ReadFile("config.json")
 
 	if err != nil {
 		return nil, err

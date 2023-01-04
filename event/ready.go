@@ -13,8 +13,10 @@ func OnReady(client *gateway.Session, config *config.Config, cmdMgr *command.Com
 	return func() {
 		log.Printf("Logged in as %s\n", client.Me().Tag())
 
+		// Initialize slash commands
 		cmdMgr.Init()
 
+		// Set activity
 		var activityType discord.ActivityType
 
 		switch config.ActivityType {
