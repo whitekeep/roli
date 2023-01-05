@@ -58,6 +58,12 @@ func (c *SayCommand) Execute(ctx *Context) bool {
 	// Send target message in target channel
 	_, err = ctx.client.Channel.SendMessage(channel.Id, msg.Content)
 
+	// TODO Улучшить отработку ошибок
+	// Send all attachments
+	for _, attachment := range msg.Attachments {
+		_, err = ctx.client.Channel.SendMessage(ctx.interaction.ChannelId, attachment.URL)
+	}
+
 	// Send ephemeral message to user
 	if err != nil {
 		_, _ = ctx.client.Interaction.CreateResponse(
