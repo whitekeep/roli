@@ -20,3 +20,8 @@ go.work
 # Env files
 .env
 .env.*
+
+# Other
+note.txt
+
+

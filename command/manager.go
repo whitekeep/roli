@@ -25,6 +25,7 @@ func (mgr *CommandManager) Init() {
 	mgr.Register(new(SayCommand))
 	mgr.Register(new(EmbedCommand))
 	mgr.Register(new(PingCommand))
+	mgr.Register(new(QuoteCommand))
 }
 
 func (mgr *CommandManager) Handler(client *gateway.Session, config *config.Config) func(*discord.Interaction) {

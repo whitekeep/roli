@@ -14,7 +14,7 @@ func (c *EmbedCommand) Name() string {
 }
 
 func (c *EmbedCommand) Description() string {
-	return "Send a embed with your message"
+	return "Отправить embed с твоим текстом"
 }
 
 func (c *EmbedCommand) Category() string {
@@ -26,13 +26,13 @@ func (c *EmbedCommand) Options() []*discord.ApplicationCommandOption {
 		{
 			Name:        "title",
 			Type:        discord.ApplicationCommandOptionString,
-			Description: "Title of the embed",
+			Description: "Заголовок",
 			Required:    true,
 		},
 		{
 			Name:        "description",
 			Type:        discord.ApplicationCommandOptionString,
-			Description: "Description of the embed (use -br for break line)",
+			Description: "Описание используй -br для переноса строки",
 			Required:    true,
 		},
 	}
