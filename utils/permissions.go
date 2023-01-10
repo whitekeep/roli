@@ -19,22 +19,37 @@ func HavePermission(userRoles []string, whitelist config.Roles, requiredLevel in
 		return true
 	}
 
-	userLevel := Everyone
+	// ЧЕРЕЗ МНОЖЕСТВО
+	// получить часть вайтлиста под требуемый уровень
+	// составить множество ролей, которых достаточно для выполнения команды
+	// составить множество ролей пользователя
+	// найти пересечение
+
+	// ЧЕРЕЗ MAP
+	//
 
 	for _, role := range userRoles {
 		if ArrayContains(whitelist.ModeratorRoles, role) {
-			userLevel = Moderator
+			if requiredLevel <= Moderator {
+				return true
+			}
 		}
 		if ArrayContains(whitelist.AdminRoles, role) {
-			userLevel = Admin
+			if requiredLevel <= Admin {
+				return true
+			}
 		}
 		if ArrayContains(whitelist.OwnerRoles, role) {
-			userLevel = Owner
+			if requiredLevel <= Owner {
+				return true
+			}
 		}
 		if ArrayContains(whitelist.DevRoles, role) {
-			userLevel = Developer
+			if requiredLevel <= Developer {
+				return true
+			}
 		}
 	}
 
-	return userLevel >= requiredLevel
+	return false
 }
