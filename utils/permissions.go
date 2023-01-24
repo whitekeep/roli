@@ -12,7 +12,7 @@ const (
 	Developer
 )
 
-// HavePermission TODO: Переделать - сделать алгоритм более эффективным
+// HavePermission TODO: Make algorithm more efficient
 func HavePermission(userRoles []string, whitelist config.Roles, requiredLevel int) bool {
 
 	if requiredLevel == Everyone {

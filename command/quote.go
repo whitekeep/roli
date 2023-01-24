@@ -1,10 +1,8 @@
 package command
 
 import (
-	"fmt"
 	"github.com/Goscord/goscord/discord"
 	"github.com/Goscord/goscord/discord/embed"
-	"roli/utils"
 )
 
 type QuoteCommand struct{}
@@ -14,7 +12,7 @@ func (c *QuoteCommand) Name() string {
 }
 
 func (c *QuoteCommand) Description() string {
-	return "Процетировать сообщение"
+	return "Процитировать сообщение"
 }
 
 func (c *QuoteCommand) Category() string {
@@ -43,18 +41,22 @@ func (c *QuoteCommand) Execute(ctx *Context) bool {
 	targetMassage, err := ctx.client.Channel.GetMessage(ctx.interaction.ChannelId, ctx.interaction.Data.Options[0].String())
 	if err != nil {
 		_, _ = ctx.SendResponse("Не удалось найти сообщение!", true)
+		return true
 	}
-	// TODO add target msg content type check (maybe it's embed?)
+
+	// Check if target message is not empty and not embed
+	if targetMassage.Content == "" && targetMassage.Embeds == nil {
+		_, _ = ctx.SendResponse("Сообщение пустое!", true)
+		return true
+	}
 
 	// Build embed
 	e := embed.NewEmbedBuilder()
 
 	e.AddField(targetMassage.Content, "_", false)
-	e.SetAuthor(targetMassage.Author.Username, targetMassage.Author.AvatarURL())
-	// TODO SetURL not work!
-	e.SetURL(utils.GetMessageUrl(targetMassage))
 	e.SetTimestamp(targetMassage.Timestamp)
 	e.SetColor(embed.Purple)
+	e.SetFooter(targetMassage.Author.Username+"#"+targetMassage.Author.Discriminator, targetMassage.Author.AvatarURL())
 
 	// Add all attachments
 	for _, attachment := range targetMassage.Attachments {
@@ -76,10 +78,9 @@ func (c *QuoteCommand) Execute(ctx *Context) bool {
 	_, err = ctx.client.Channel.SendMessage(targetChannel, e.Embed())
 	if err != nil {
 		_, _ = ctx.SendResponse("Не удалось отправить сообщение!", true)
-		fmt.Printf("Error: %s", err)
 	}
 
-	// Send response
+	// Send Done response
 	_, _ = ctx.SendResponse("Сообщение отправлено!", false)
 
 	return true
