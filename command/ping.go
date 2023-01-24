@@ -2,8 +2,7 @@ package command
 
 import (
 	"fmt"
-
-	"github.com/Goscord/goscord/discord"
+	"github.com/Goscord/goscord/goscord/discord"
 )
 
 type PingCommand struct{}
@@ -25,13 +24,7 @@ func (c *PingCommand) Options() []*discord.ApplicationCommandOption {
 }
 
 func (c *PingCommand) Execute(ctx *Context) bool {
-	_, _ = ctx.client.Interaction.CreateResponse(
-		ctx.interaction.Id,
-		ctx.interaction.Token,
-		&discord.InteractionCallbackMessage{
-			Content: fmt.Sprintf("Pong! 🏓 (%dms)", ctx.client.Latency().Milliseconds()),
-			Flags:   discord.MessageFlagEphemeral,
-		})
+	_ = ctx.SendResponse(fmt.Sprintf("Pong! 🏓 (%dms)", ctx.client.Latency().Milliseconds()), true)
 
 	return true
 }

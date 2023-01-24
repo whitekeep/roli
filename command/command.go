@@ -2,9 +2,9 @@ package command
 
 import (
 	"errors"
-	"github.com/Goscord/goscord/discord"
-	"github.com/Goscord/goscord/discord/embed"
-	"github.com/Goscord/goscord/gateway"
+	"github.com/Goscord/goscord/goscord/discord"
+	"github.com/Goscord/goscord/goscord/discord/embed"
+	"github.com/Goscord/goscord/goscord/gateway"
 	"roli/config"
 )
 
@@ -23,13 +23,15 @@ type Command interface {
 	Execute(ctx *Context) bool
 }
 
-func (ctx *Context) SendResponse(content interface{}, ephemeral bool) (*discord.InteractionResponse, error) {
+func (ctx *Context) SendResponse(content interface{}, ephemeral bool) error {
 
+	// Check if this message is ephemeral
 	var isEphemeral discord.MessageFlag
 	if ephemeral {
 		isEphemeral = discord.MessageFlagEphemeral
 	}
 
+	// Check the type of the content
 	switch currentContent := content.(type) {
 	case string:
 		return ctx.client.Interaction.CreateResponse(
@@ -45,12 +47,13 @@ func (ctx *Context) SendResponse(content interface{}, ephemeral bool) (*discord.
 			ctx.interaction.Id,
 			ctx.interaction.Token,
 			currentContent,
+			// TODO add ephemeral support
 		)
 
 	// TODO: Add os.File support
 
 	default:
-		return nil, errors.New("massage type not supported")
+		return errors.New("massage type not supported")
 	}
 
 }

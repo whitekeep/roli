@@ -1,10 +1,10 @@
 package event
 
 import (
+	"github.com/Goscord/goscord/goscord/discord"
+	"github.com/Goscord/goscord/goscord/gateway"
 	"log"
 
-	"github.com/Goscord/goscord/discord"
-	"github.com/Goscord/goscord/gateway"
 	"roli/command"
 	"roli/config"
 )

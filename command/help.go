@@ -2,9 +2,8 @@ package command
 
 import (
 	"fmt"
-
-	"github.com/Goscord/goscord/discord"
-	"github.com/Goscord/goscord/discord/embed"
+	"github.com/Goscord/goscord/goscord/discord"
+	"github.com/Goscord/goscord/goscord/discord/embed"
 )
 
 type HelpCommand struct{}
@@ -37,13 +36,7 @@ func (c *HelpCommand) Execute(ctx *Context) bool {
 	e.SetFooter(ctx.client.Me().Username, ctx.client.Me().AvatarURL())
 	e.SetColor(embed.Green)
 
-	_, _ = ctx.client.Interaction.CreateResponse(
-		ctx.interaction.Id,
-		ctx.interaction.Token,
-		&discord.InteractionCallbackMessage{
-			Embeds: []*embed.Embed{e.Embed()},
-			Flags:  discord.MessageFlagEphemeral,
-		})
+	_ = ctx.SendResponse(e.Embed(), true)
 
 	return true
 }

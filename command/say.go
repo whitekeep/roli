@@ -1,7 +1,7 @@
 package command
 
 import (
-	"github.com/Goscord/goscord/discord"
+	"github.com/Goscord/goscord/goscord/discord"
 	"roli/utils"
 )
 
@@ -41,19 +41,13 @@ func (c *SayCommand) Execute(ctx *Context) bool {
 	permission := utils.HavePermission(ctx.interaction.Member.Roles, ctx.config.Roles, utils.Admin)
 	if !permission {
 		// If the user don't have the permission, send a message to the user
-		_, _ = ctx.client.Interaction.CreateResponse(
-			ctx.interaction.Id,
-			ctx.interaction.Token,
-			&discord.InteractionCallbackMessage{
-				Content: "У вас недостаточно прав для использования данной команды!",
-				Flags:   discord.MessageFlagEphemeral,
-			})
+		_ = ctx.SendResponse("У вас недостаточно прав для использования этой команды!", true)
 		return false
 	}
 
 	// Get message and channel by provided ID
-	msg, err := ctx.client.Channel.GetMessage(ctx.interaction.ChannelId, ctx.interaction.Data.Options[0].String())
-	channel, err := ctx.client.Channel.GetChannel(ctx.interaction.Data.Options[1].String())
+	msg, err := ctx.client.Channel.GetMessage(ctx.interaction.ChannelId, ctx.interaction.Data.(discord.ApplicationCommandData).Options[0].Value.(string))
+	channel, err := ctx.client.Channel.GetChannel(ctx.interaction.Data.(discord.ApplicationCommandData).Options[1].Value.(string))
 
 	// Send target message in target channel
 	_, err = ctx.client.Channel.SendMessage(channel.Id, msg.Content)
@@ -66,21 +60,9 @@ func (c *SayCommand) Execute(ctx *Context) bool {
 
 	// Send ephemeral message to user
 	if err != nil {
-		_, _ = ctx.client.Interaction.CreateResponse(
-			ctx.interaction.Id,
-			ctx.interaction.Token,
-			&discord.InteractionCallbackMessage{
-				Content: "Ошибка! ❌",
-				Flags:   discord.MessageFlagEphemeral,
-			})
+		_ = ctx.SendResponse("Произошла ошибка! ❌", true)
 	} else {
-		_, _ = ctx.client.Interaction.CreateResponse(
-			ctx.interaction.Id,
-			ctx.interaction.Token,
-			&discord.InteractionCallbackMessage{
-				Content: "Готово! ✅",
-				Flags:   discord.MessageFlagEphemeral,
-			})
+		_ = ctx.SendResponse("Сообщение успешно отправлено! ✅", true)
 	}
 
 	return true

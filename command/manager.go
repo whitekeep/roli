@@ -1,8 +1,8 @@
 package command
 
 import (
-	"github.com/Goscord/goscord/discord"
-	"github.com/Goscord/goscord/gateway"
+	"github.com/Goscord/goscord/goscord/discord"
+	"github.com/Goscord/goscord/goscord/gateway"
 	"roli/config"
 )
 
@@ -38,7 +38,7 @@ func (mgr *CommandManager) Handler(client *gateway.Session, config *config.Confi
 			return
 		}
 
-		cmd := mgr.Get(interaction.Data.Name)
+		cmd := mgr.Get(interaction.Data.(discord.ApplicationCommandData).Name)
 
 		if cmd != nil {
 			_ = cmd.Execute(&Context{config: config, client: client, interaction: interaction, cmdMgr: mgr})

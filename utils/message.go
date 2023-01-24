@@ -2,7 +2,7 @@ package utils
 
 import (
 	"fmt"
-	"github.com/Goscord/goscord/discord"
+	"github.com/Goscord/goscord/goscord/discord"
 )
 
 func GetMessageUrl(msg *discord.Message) string {

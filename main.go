@@ -1,12 +1,12 @@
 package main
 
 import (
+	"github.com/Goscord/goscord/goscord"
+	"github.com/Goscord/goscord/goscord/gateway"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/Goscord/goscord"
-	"github.com/Goscord/goscord/gateway"
 	"github.com/joho/godotenv"
 	"roli/command"
 	"roli/config"

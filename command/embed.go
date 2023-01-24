@@ -1,10 +1,9 @@
 package command
 
 import (
+	"github.com/Goscord/goscord/goscord/discord"
+	"github.com/Goscord/goscord/goscord/discord/embed"
 	"strings"
-
-	"github.com/Goscord/goscord/discord"
-	"github.com/Goscord/goscord/discord/embed"
 )
 
 type EmbedCommand struct{}
@@ -41,13 +40,13 @@ func (c *EmbedCommand) Options() []*discord.ApplicationCommandOption {
 func (c *EmbedCommand) Execute(ctx *Context) bool {
 	e := embed.NewEmbedBuilder()
 
-	title := ctx.interaction.Data.Options[0].String()
-	description := ctx.interaction.Data.Options[1].String()
+	title := ctx.interaction.Data.(discord.ApplicationCommandData).Options[0].Value.(string)
+	description := ctx.interaction.Data.(discord.ApplicationCommandData).Options[1].Value.(string)
 
 	e.AddField(title, strings.ReplaceAll(description, "-br", "\n"), false)
 	e.SetColor(embed.Green)
 
-	_, _ = ctx.client.Interaction.CreateResponse(ctx.interaction.Id, ctx.interaction.Token, e.Embed())
+	_ = ctx.SendResponse(e.Embed(), true)
 
 	return true
 }
