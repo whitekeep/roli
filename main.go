@@ -28,7 +28,7 @@ func main() {
 	// Create client instance
 	client = goscord.New(&gateway.Options{
 		Token: os.Getenv("BOT_TOKEN"),
-		Intents: gateway.IntentGuilds |
+		Intents: gateway.IntentsGuild |
 			gateway.IntentGuildMessages |
 			gateway.IntentGuildMembers |
 			gateway.IntentDirectMessages |
